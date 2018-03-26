@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cecs475.BoardGames.WpfView;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,13 +17,19 @@ using System.Windows.Shapes;
 namespace Cecs475.BoardGames.Chess.WpfView
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ChessView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ChessView : UserControl, IWpfGameView
     {
-        public MainWindow()
+        public ChessView()
         {
             InitializeComponent();
         }
+
+        public ChessViewModel ChessViewModel => FindResource("vm") as ChessViewModel;
+
+        public Control ViewControl => this;
+
+        public IGameViewModel ViewModel => ChessViewModel;
     }
 }

@@ -69,11 +69,43 @@ namespace Cecs475.BoardGames.Chess.WpfView
     /// <summary>
     /// Represents the game state of a single chess game
     /// </summary>
-    class ChessViewModel : INotifyPropertyChanged, IGameViewModel
+    public class ChessViewModel : INotifyPropertyChanged, IGameViewModel
     {
         private ChessBoard mBoard;
         private ObservableCollection<ChessSquare> mSquares;
+
+        /// <summary>
+		/// A set of board positions where the current player can move.
+		/// </summary>
+		public HashSet<BoardPosition> PossibleMoves
+        {
+            get; private set;
+        }
+
+        public GameAdvantage BoardAdvantage => throw new NotImplementedException();
+
+        public int CurrentPlayer => throw new NotImplementedException();
+
+        public bool CanUndo => throw new NotImplementedException();
+
         public event EventHandler GameFinished;
+
+        /// <summary>
+		/// A collection of 64 OthelloSquare objects representing the state of the 
+		/// game board.
+		/// </summary>
+		public ObservableCollection<ChessSquare> Squares
+        {
+            get { return mSquares; }
+        }
+
+        /// <summary>
+		/// The position of the square.
+		/// </summary>
+		public BoardPosition Position
+        {
+            get; set;
+        }
 
         public ChessViewModel()
         {
@@ -135,8 +167,16 @@ namespace Cecs475.BoardGames.Chess.WpfView
                 i++;
             }
         }
+
+        public void UndoMove()
+        {
+            throw new NotImplementedException();
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
+
+        
     }
-    {
-    }
+    
+    
 }
