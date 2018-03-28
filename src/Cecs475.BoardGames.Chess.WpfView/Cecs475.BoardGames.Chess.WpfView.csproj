@@ -58,7 +58,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ChessAdvantageConverter.cs" />
+    <Compile Include="ChessCurrentPlayerConverter.cs" />
+    <Compile Include="ChessGameFactory.cs" />
     <Compile Include="ChessSquareBackgroundConverter.cs" />
+    <Compile Include="ChessSquarePlayerConverter.cs" />
     <Compile Include="ChessView.xaml.cs">
       <DependentUpon>ChessView.xaml</DependentUpon>
     </Compile>
@@ -91,15 +95,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\Cecs475.BoardGames.Chess.Model\Cecs475.BoardGames.Chess.Model.csproj">
+    <ProjectReference Include="..\Cecs475.BoardGames.Chess.Model\Cecs475.BoardGames.Chess.Model.csproj">
       <Project>{16A691E8-D370-4CAB-A02C-1BBBFDF19DD4}</Project>
       <Name>Cecs475.BoardGames.Chess.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\src\Cecs475.BoardGames.Model\Cecs475.BoardGames.Model.csproj">
+    <ProjectReference Include="..\Cecs475.BoardGames.Model\Cecs475.BoardGames.Model.csproj">
       <Project>{AD3670AC-F179-44FD-B2C4-2BF0C6819355}</Project>
       <Name>Cecs475.BoardGames.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\src\Cecs475.BoardGames.WpfView\Cecs475.BoardGames.WpfView.csproj">
+    <ProjectReference Include="..\Cecs475.BoardGames.WpfView\Cecs475.BoardGames.WpfView.csproj">
       <Project>{2DF47748-AD85-4ED5-8B57-729BED253F66}</Project>
       <Name>Cecs475.BoardGames.WpfView</Name>
     </ProjectReference>

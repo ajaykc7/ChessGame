@@ -98,6 +98,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Cecs475.BoardGames.Chess.WpfView\Cecs475.BoardGames.Chess.WpfView.csproj">
+      <Project>{8edbf660-c591-478f-b4a4-115c1d330aa3}</Project>
+      <Name>Cecs475.BoardGames.Chess.WpfView</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cecs475.BoardGames.Othello.WpfView\Cecs475.BoardGames.Othello.WpfView.csproj">
       <Project>{b60be21d-4156-4033-a296-c9fe1347fbd1}</Project>
       <Name>Cecs475.BoardGames.Othello.WpfView</Name>

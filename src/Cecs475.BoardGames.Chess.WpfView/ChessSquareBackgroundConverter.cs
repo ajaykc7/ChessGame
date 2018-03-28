@@ -27,25 +27,11 @@ namespace Cecs475.BoardGames.Chess.WpfView
             //Generate background colors that alternate
             if(pos.Row % 2 == 0)
             {
-                if(pos.Col % 2 == 0)
-                {
-                    return CHECKERED_BRUSH_1;
-                }
-                else
-                {
-                    return CHECKERED_BRUSH_2;
-                }
+                return (pos.Col % 2 == 0) ? CHECKERED_BRUSH_1 : CHECKERED_BRUSH_2;
             }
             else
             {
-                if (pos.Col % 2 == 0)
-                {
-                    return CHECKERED_BRUSH_2;
-                }
-                else
-                {
-                    return CHECKERED_BRUSH_1;
-                }
+                return (pos.Col % 2 == 0) ? CHECKERED_BRUSH_2 : CHECKERED_BRUSH_1;
             }
            
         }

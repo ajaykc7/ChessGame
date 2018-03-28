@@ -73,39 +73,7 @@ namespace Cecs475.BoardGames.Chess.WpfView
     {
         private ChessBoard mBoard;
         private ObservableCollection<ChessSquare> mSquares;
-
-        /// <summary>
-		/// A set of board positions where the current player can move.
-		/// </summary>
-		public HashSet<BoardPosition> PossibleMoves
-        {
-            get; private set;
-        }
-
-        public GameAdvantage BoardAdvantage => throw new NotImplementedException();
-
-        public int CurrentPlayer => throw new NotImplementedException();
-
-        public bool CanUndo => throw new NotImplementedException();
-
         public event EventHandler GameFinished;
-
-        /// <summary>
-		/// A collection of 64 OthelloSquare objects representing the state of the 
-		/// game board.
-		/// </summary>
-		public ObservableCollection<ChessSquare> Squares
-        {
-            get { return mSquares; }
-        }
-
-        /// <summary>
-		/// The position of the square.
-		/// </summary>
-		public BoardPosition Position
-        {
-            get; set;
-        }
 
         public ChessViewModel()
         {
@@ -166,16 +134,58 @@ namespace Cecs475.BoardGames.Chess.WpfView
                 mSquares[i].Player = mBoard.GetPlayerAtPosition(pos);
                 i++;
             }
+            OnPropertyChanged(nameof(BoardAdvantage));
+            OnPropertyChanged(nameof(CurrentPlayer));
+            OnPropertyChanged(nameof(CanUndo));
+        }
+
+        /// <summary>
+		/// A collection of 64 ChessSquare objects representing the state of the 
+		/// game board.
+		/// </summary>
+		public ObservableCollection<ChessSquare> Squares
+        {
+            get { return mSquares; }
+        }
+
+        /// <summary>
+		/// A set of board positions where the current player can move.
+		/// </summary>
+		public HashSet<BoardPosition> PossibleMoves
+        {
+            get; private set;
+        }
+
+        /// <summary>
+		/// The player whose turn it currently is.
+		/// </summary>
+		public int CurrentPlayer
+        {
+            get { return mBoard.CurrentPlayer; }
+        }
+
+        /// <summary>
+		/// The value of the othello board.
+		/// </summary>
+        public GameAdvantage BoardAdvantage => mBoard.CurrentAdvantage;
+
+        public bool CanUndo => mBoard.MoveHistory.Any();
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         public void UndoMove()
         {
-            throw new NotImplementedException();
+            if (CanUndo)
+            {
+                mBoard.UndoLastMove();
+                RebindState();
+            }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        
     }
     
     
