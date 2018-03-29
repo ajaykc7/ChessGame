@@ -108,14 +108,26 @@
       <Name>Cecs475.BoardGames.WpfView</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="ChessView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\BlackBishop.png" />
+    <Resource Include="Resources\BlackKing.png" />
+    <Resource Include="Resources\BlackKnight.png" />
+    <Resource Include="Resources\BlackPawn.png" />
+    <Resource Include="Resources\BlackQueen.png" />
+    <Resource Include="Resources\BlackRook.png" />
+    <Resource Include="Resources\WhiteBishop.png" />
+    <Resource Include="Resources\WhiteKing.png" />
+    <Resource Include="Resources\WhiteKnight.png" />
+    <Resource Include="Resources\WhitePawn.png" />
+    <Resource Include="Resources\WhiteQueen.png" />
+    <Resource Include="Resources\WhiteRook.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

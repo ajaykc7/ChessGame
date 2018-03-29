@@ -42,6 +42,11 @@ namespace Cecs475.BoardGames.Chess.WpfView
             get; set;
         }
 
+        public ChessPieceType ChessPieceType
+        {
+            get; set;
+        }
+
         private bool mIsHighlighted;
         /// <summary>
         /// Whether the square should be highlighted because of a user action.
@@ -58,6 +63,8 @@ namespace Cecs475.BoardGames.Chess.WpfView
                 }
             }
         }
+
+        
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string name)
@@ -85,7 +92,8 @@ namespace Cecs475.BoardGames.Chess.WpfView
                 .Select(pos => new ChessSquare()
                 {
                     Position = pos,
-                    Player = mBoard.GetPlayerAtPosition(pos)
+                    Player = mBoard.GetPlayerAtPosition(pos),
+                    ChessPieceType = mBoard.GetPieceAtPosition(pos).PieceType
                 })
             );
 

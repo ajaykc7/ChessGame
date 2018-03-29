@@ -63,15 +63,15 @@
                     We use it here because it can Bind to the Player property of an ChessSquare object,
                     using our PlayerImage resource to convert that int to a control.
                     -->
-                    <ContentControl Content="{Binding Player, Converter={StaticResource PlayerImage}}"/>
-                    <!--
+                    <!--<ContentControl Content="{Binding Player, Converter={StaticResource PlayerImage}}"/>
+                    -->
                     <ContentControl>
                         <MultiBinding Converter="{StaticResource PlayerImage}">
-                            <Binding Path="CurrentPlayer"/>
-                            
+                            <Binding Path="Player"/>
+                            <Binding Path="ChessPieceType"/>
                         </MultiBinding>
                     </ContentControl>
-                    -->
+                    
                 </Border>
             </DataTemplate>
         </ItemsControl.ItemTemplate>
