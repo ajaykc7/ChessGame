@@ -63,11 +63,11 @@
                     <!--<ContentControl Content="{Binding Player, Converter={StaticResource PlayerImage}}"/>
                     -->
                     <ContentControl>
-                        <MultiBinding Converter="{StaticResource PlayerImage}">
-                            <Binding Path="Player"/>
-                            <Binding Path="ChessPieceType"/>
-                        </MultiBinding>
-                    </ContentControl>
+                            <MultiBinding Converter="{StaticResource PlayerImage}">
+                                <Binding Path="Player"/>
+                                <Binding Path="ChessPieceType"/>
+                            </MultiBinding>
+                       </ContentControl>
                     
                 </Border>
             </DataTemplate>
