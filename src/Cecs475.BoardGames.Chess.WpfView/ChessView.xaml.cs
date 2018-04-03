@@ -40,10 +40,11 @@ namespace Cecs475.BoardGames.Chess.WpfView
             var square = b.DataContext as ChessSquare;
             var vm = FindResource("vm") as ChessViewModel;
 
-            //if no square is selected, do not highlight anything
+            //if no square is selected
             if (selectedSquare == null)
             {
-                square.IsHighlighted = false;
+                //if hovering over a piece that has a possible move, square is highlighted
+                square.IsHighlighted = vm.PossibleStartPositions.Contains(square.Position) ? true : false;
             }
             else
             {
@@ -91,6 +92,8 @@ namespace Cecs475.BoardGames.Chess.WpfView
                     //if a different square is clicked, delselect the previous square and select the new one
                     else
                     {
+                        //Fix Applied: Need to deselect before changing selectedSquare
+                        selectedSquare.IsSelected = false;
                         if (square.IsHighlighted)
                         {
                             vm.ApplyMove(square.Position);
@@ -101,12 +104,18 @@ namespace Cecs475.BoardGames.Chess.WpfView
                             square.IsSelected = true;
                             selectedSquare = square;
                         }
-                        selectedSquare.IsSelected = false;
                     }
                 }
-                
-                
                 //square.IsSelected = (square.IsSelected) ? false:true;
+            }
+            else
+            {
+                //if the square that is not a possible move is selected, deselect the previous square
+                if(selectedSquare != null)
+                {
+                    selectedSquare.IsSelected = false;
+                    selectedSquare = null;
+                }
             }
         }
 
