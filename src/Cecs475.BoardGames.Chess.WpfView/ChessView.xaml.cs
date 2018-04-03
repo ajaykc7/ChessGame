@@ -39,12 +39,15 @@ namespace Cecs475.BoardGames.Chess.WpfView
             Border b = sender as Border;
             var square = b.DataContext as ChessSquare;
             var vm = FindResource("vm") as ChessViewModel;
+
+            //if no square is selected, do not highlight anything
             if (selectedSquare == null)
             {
                 square.IsHighlighted = false;
             }
             else
             {
+                //only highlight squares that are possible endPosition for selected piece
                 if (vm.PossibleMoves.Contains(new ChessMove(selectedSquare.Position, square.Position)))
                 {
                     square.IsHighlighted = true;
@@ -65,21 +68,27 @@ namespace Cecs475.BoardGames.Chess.WpfView
             Border b = sender as Border;
             var square = b.DataContext as ChessSquare;
             var vm = FindResource("vm") as ChessViewModel;
+
+            //only select squares that are possible start positions from all possible moves
             if (vm.PossibleStartPositions.Contains(square.Position))
             {
+                //if no square has been selected currently, select the clicked square
                 if(selectedSquare == null)
                 {
                     square.IsSelected = true;
                     selectedSquare = square;
 
                 }
+                //if a square is already select, determine if the same square or a different square is clicked
                 else
                 {
+                    //if the same square is clicked, deselect the square
                     if (selectedSquare == square)
                     {
                         square.IsSelected = false;
                         selectedSquare = null;
                     }
+                    //if a different square is clicked, delselect the previous square and select the new one
                     else
                     {
                         if (square.IsHighlighted)
