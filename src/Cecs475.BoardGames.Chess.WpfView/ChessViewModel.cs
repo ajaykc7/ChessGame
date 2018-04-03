@@ -42,7 +42,10 @@ namespace Cecs475.BoardGames.Chess.WpfView
             get; set;
         }
 
-        public ChessPieceType ChessPieceType
+        /// <summary>
+        /// The chess piece at a given square
+        /// </summary>
+        public ChessPiece ChessPiece
         {
             get; set;
         }
@@ -110,7 +113,7 @@ namespace Cecs475.BoardGames.Chess.WpfView
                 {
                     Position = pos,
                     Player = mBoard.GetPlayerAtPosition(pos),
-                    ChessPieceType = mBoard.GetPieceAtPosition(pos).PieceType
+                    ChessPiece = mBoard.GetPieceAtPosition(pos)
                 })
             );
             //PossibleMoves = new HashSet<ChessMove>(
