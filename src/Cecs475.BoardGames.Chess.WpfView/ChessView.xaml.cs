@@ -1,4 +1,5 @@
-﻿using Cecs475.BoardGames.WpfView;
+﻿using Cecs475.BoardGames.Chess.Model;
+using Cecs475.BoardGames.WpfView;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,10 +39,18 @@ namespace Cecs475.BoardGames.Chess.WpfView
             Border b = sender as Border;
             var square = b.DataContext as ChessSquare;
             var vm = FindResource("vm") as ChessViewModel;
-            if (vm.PossibleEndPositions.Contains(square.Position))
+            if (selectedSquare == null)
             {
-                square.IsHighlighted = true;
+                square.IsHighlighted = false;
             }
+            else
+            {
+                if (vm.PossibleMoves.Contains(new ChessMove(selectedSquare.Position, square.Position)))
+                {
+                    square.IsHighlighted = true;
+                }
+            }
+            
         }
 
         private void Border_MouseLeave(object sender, MouseEventArgs e)
@@ -73,9 +82,17 @@ namespace Cecs475.BoardGames.Chess.WpfView
                     }
                     else
                     {
+                        if (square.IsHighlighted)
+                        {
+                            vm.ApplyMove(square.Position);
+                            selectedSquare = null;
+                        }
+                        else
+                        {
+                            square.IsSelected = true;
+                            selectedSquare = square;
+                        }
                         selectedSquare.IsSelected = false;
-                        square.IsSelected = true;
-                        selectedSquare = square;
                     }
                 }
                 

@@ -26,7 +26,11 @@ namespace Cecs475.BoardGames.Chess.WpfView
             bool isHighlighted = (bool)values[2];
 
             //Generate background colors that alternate
-            
+            if (isHighlighted)
+            {
+                return HOVERED_SQUARE;
+            }
+
             if (isSelected)
             {
                 return SELECTED_SQUARE;

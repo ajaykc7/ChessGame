@@ -127,6 +127,11 @@ namespace Cecs475.BoardGames.Chess.WpfView
                 from ChessMove m in mBoard.GetPossibleMoves()
                 select m.EndPosition
             );
+
+            PossibleMoves = new HashSet<ChessMove>(
+            from ChessMove m in mBoard.GetPossibleMoves()
+            select m
+            );
             // PossibleMoves = new HashSet<BoardPosition>(
             //   mBoard.GetPossibleMoves()
             // .Select(m => m.EndPosition));
@@ -175,6 +180,11 @@ namespace Cecs475.BoardGames.Chess.WpfView
             PossibleEndPositions = new HashSet<BoardPosition>(
                 from ChessMove m in mBoard.GetPossibleMoves()
                 select m.EndPosition
+            );
+
+            PossibleMoves = new HashSet<ChessMove>(
+            from ChessMove m in mBoard.GetPossibleMoves()
+            select m
             );
 
             //Update the collection of square by examining the new board state
