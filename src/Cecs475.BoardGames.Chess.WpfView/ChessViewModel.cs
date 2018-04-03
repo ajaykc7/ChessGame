@@ -47,6 +47,23 @@ namespace Cecs475.BoardGames.Chess.WpfView
             get; set;
         }
 
+        private bool mIsSelected;
+
+        /// <summary>
+        /// Whether the square is selected by the user
+        /// </summary>
+        public bool IsSelected
+        {
+            get { return mIsSelected; }
+            set
+            {
+                if(value != mIsSelected)
+                {
+                    mIsSelected = value;
+                    OnPropertyChanged(nameof(IsSelected));
+                }
+            }
+        }
         private bool mIsHighlighted;
         /// <summary>
         /// Whether the square should be highlighted because of a user action.
@@ -96,10 +113,23 @@ namespace Cecs475.BoardGames.Chess.WpfView
                     ChessPieceType = mBoard.GetPieceAtPosition(pos).PieceType
                 })
             );
+            //PossibleMoves = new HashSet<ChessMove>(
+            //    from ChessMove m in mBoard.GetPossibleMoves()
+            //    select m
+            //);
 
-            PossibleMoves = new HashSet<BoardPosition>(
-                mBoard.GetPossibleMoves()
-                .Select(m => m.EndPosition));
+            PossibleStartPositions = new HashSet<BoardPosition>(
+                from ChessMove m in mBoard.GetPossibleMoves()
+                select m.StartPosition
+            );
+
+            PossibleEndPositions = new HashSet<BoardPosition>(
+                from ChessMove m in mBoard.GetPossibleMoves()
+                select m.EndPosition
+            );
+            // PossibleMoves = new HashSet<BoardPosition>(
+            //   mBoard.GetPossibleMoves()
+            // .Select(m => m.EndPosition));
         }
 
         /// <summary>
@@ -130,9 +160,22 @@ namespace Cecs475.BoardGames.Chess.WpfView
         private void RebindState()
         {
             //Rebind the possible moves, now that the board has changed.
-            PossibleMoves = new HashSet<BoardPosition>(
-                mBoard.GetPossibleMoves()
-                .Select(m => m.EndPosition));
+            //PossibleMoves = new HashSet<ChessMove>(
+            //  mBoard.GetPossibleMoves()
+            //.Select(m => m.EndPosition));
+            // PossibleMoves = new HashSet<ChessMove>(
+            //    from ChessMove m in mBoard.GetPossibleMoves()
+            //   select m
+            //);
+            PossibleStartPositions = new HashSet<BoardPosition>(
+               from ChessMove m in mBoard.GetPossibleMoves()
+               select m.StartPosition
+            );
+
+            PossibleEndPositions = new HashSet<BoardPosition>(
+                from ChessMove m in mBoard.GetPossibleMoves()
+                select m.EndPosition
+            );
 
             //Update the collection of square by examining the new board state
             var newSquares = BoardPosition.GetRectangularPositions(8, 8);
@@ -157,9 +200,26 @@ namespace Cecs475.BoardGames.Chess.WpfView
         }
 
         /// <summary>
+		/// A set of chess moves available for players
+		/// </summary>
+		public HashSet<ChessMove> PossibleMoves
+        {
+            get; private set;
+        }
+
+        
+        /// <summary>
 		/// A set of board positions where the current player can move.
 		/// </summary>
-		public HashSet<BoardPosition> PossibleMoves
+		public HashSet<BoardPosition> PossibleStartPositions
+        {
+            get; private set;
+        }
+
+        /// <summary>
+		/// A set of board positions where the current player can move the piece from.
+		/// </summary>
+		public HashSet<BoardPosition> PossibleEndPositions
         {
             get; private set;
         }

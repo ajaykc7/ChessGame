@@ -45,17 +45,14 @@
                 This control is created for each element in the ItemSource. 
                 A Border control draws a border around whatever control it contains.
                 -->
-                <Border BorderThickness="1" BorderBrush="Black">
-                    <!--
+                <Border BorderThickness="1" BorderBrush="Black"
                         MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave"
                         MouseUp="Border_MouseUp">
-                    -->
                     <Border.Background>
                         <MultiBinding Converter="{StaticResource BackgroundColor}">
                             <Binding Path="Position"/>
-                            <!--
+                            <Binding Path="IsSelected"/>
                             <Binding Path="IsHighlighted"/>
-                            -->
                         </MultiBinding>
                     </Border.Background>
                     <!-- 
