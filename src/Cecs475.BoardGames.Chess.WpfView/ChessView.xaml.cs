@@ -94,16 +94,16 @@ namespace Cecs475.BoardGames.Chess.WpfView
                     {
                         //Fix Applied: Need to deselect before changing selectedSquare
                         selectedSquare.IsSelected = false;
-                        if (square.IsHighlighted)
-                        {
-                            vm.ApplyMove(square.Position);
-                            selectedSquare = null;
-                        }
-                        else
-                        {
+                        //if (square.IsHighlighted)
+                        //{
+                        //    vm.ApplyMove(square.Position);
+                        //    selectedSquare = null;
+                        //}
+                        //else
+                        //{
                             square.IsSelected = true;
                             selectedSquare = square;
-                        }
+                        //}
                     }
                 }
                 //square.IsSelected = (square.IsSelected) ? false:true;
@@ -114,6 +114,11 @@ namespace Cecs475.BoardGames.Chess.WpfView
                 if(selectedSquare != null)
                 {
                     selectedSquare.IsSelected = false;
+                    if (square.IsHighlighted)
+                    {
+                        vm.StartBoardPosition = selectedSquare.Position;
+                        vm.ApplyMove(square.Position);
+                    }
                     selectedSquare = null;
                 }
             }

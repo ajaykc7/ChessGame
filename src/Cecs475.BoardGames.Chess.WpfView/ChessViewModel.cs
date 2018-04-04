@@ -17,6 +17,7 @@ namespace Cecs475.BoardGames.Chess.WpfView
     public class ChessSquare : INotifyPropertyChanged
     {
         private int mPlayer;
+        private ChessPiece mChessPiece;
 
         /// <summary>
         /// The player that has a piece in the given sqare, or 0 if empty.
@@ -47,7 +48,18 @@ namespace Cecs475.BoardGames.Chess.WpfView
         /// </summary>
         public ChessPiece ChessPiece
         {
-            get; set;
+            get
+            {
+                return mChessPiece;
+            }
+            set
+            {
+                if(!value.Equals(mChessPiece))
+                {
+                    mChessPiece = value;
+                    OnPropertyChanged(nameof(ChessPiece));
+                }
+            }
         }
 
         private bool mIsSelected;
@@ -150,7 +162,7 @@ namespace Cecs475.BoardGames.Chess.WpfView
             //Make sure the move is valid
             foreach(var move in possMoves)
             {
-                if (move.EndPosition.Equals(position))
+                if ((move.StartPosition.Equals(StartBoardPosition))&&(move.EndPosition.Equals(position)))
                 {
                     mBoard.ApplyMove(move);
                     break;
@@ -196,6 +208,7 @@ namespace Cecs475.BoardGames.Chess.WpfView
             foreach(var pos in newSquares)
             {
                 mSquares[i].Player = mBoard.GetPlayerAtPosition(pos);
+                mSquares[i].ChessPiece = mBoard.GetPieceAtPosition(pos);
                 i++;
             }
             OnPropertyChanged(nameof(BoardAdvantage));
@@ -245,8 +258,13 @@ namespace Cecs475.BoardGames.Chess.WpfView
             get { return mBoard.CurrentPlayer; }
         }
 
+        public BoardPosition StartBoardPosition
+        {
+            get; set;
+        }
+
         /// <summary>
-		/// The value of the othello board.
+		/// The value of the chess board.
 		/// </summary>
         public GameAdvantage BoardAdvantage => mBoard.CurrentAdvantage;
 
