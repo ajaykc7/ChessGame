@@ -49,10 +49,35 @@ namespace Cecs475.BoardGames.Chess.WpfView
             else
             {
                 //only highlight squares that are possible endPosition for selected piece
-                if (vm.PossibleMoves.Contains(new ChessMove(selectedSquare.Position, square.Position)))
+                ChessPieceType pieceType = vm.GetPieceAtPosition(selectedSquare.Position).PieceType;
+
+                switch(pieceType){
+                    case (ChessPieceType.Pawn):
+                        if ((vm.PossibleMoves.Contains(new ChessMove(selectedSquare.Position, square.Position,ChessMoveType.Normal)))
+                            || (vm.PossibleMoves.Contains(new ChessMove(selectedSquare.Position, square.Position, ChessMoveType.EnPassant))))
+                        {
+                            square.IsHighlighted = true;
+                        }
+                        break;
+                    case (ChessPieceType.King):
+                        if ((vm.PossibleMoves.Contains(new ChessMove(selectedSquare.Position, square.Position, ChessMoveType.Normal)))
+                            || (vm.PossibleMoves.Contains(new ChessMove(selectedSquare.Position, square.Position, ChessMoveType.CastleKingSide)))
+                            || (vm.PossibleMoves.Contains(new ChessMove(selectedSquare.Position, square.Position, ChessMoveType.CastleQueenSide))))
+                        {
+                            square.IsHighlighted = true;
+                        }
+                        break;
+                    default:
+                        if (vm.PossibleMoves.Contains(new ChessMove(selectedSquare.Position, square.Position)))
+                        {
+                            square.IsHighlighted = true;
+                        }
+                        break;
+                }
+                /*if (vm.PossibleMoves.Contains(new ChessMove(selectedSquare.Position, square.Position)))
                 {
                     square.IsHighlighted = true;
-                }
+                }*/
             }
             
         }

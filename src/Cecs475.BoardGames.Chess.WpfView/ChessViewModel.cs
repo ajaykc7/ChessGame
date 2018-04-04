@@ -152,6 +152,11 @@ namespace Cecs475.BoardGames.Chess.WpfView
             // .Select(m => m.EndPosition));
         }
 
+        public ChessPiece GetPieceAtPosition(BoardPosition pos)
+        {
+            return mBoard.GetPieceAtPosition(pos);
+        }
+
         /// <summary>
         /// Applies a move for the current player at the given position
         /// </summary>
