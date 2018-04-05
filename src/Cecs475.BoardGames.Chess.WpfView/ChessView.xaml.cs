@@ -53,8 +53,11 @@ namespace Cecs475.BoardGames.Chess.WpfView
 
                 switch(pieceType){
                     case (ChessPieceType.Pawn):
+                        ChessMove promote1 = new ChessMove(selectedSquare.Position, square.Position, ChessMoveType.PawnPromote);
+                        promote1.PromoteTo = ChessPieceType.Queen;
                         if ((vm.PossibleMoves.Contains(new ChessMove(selectedSquare.Position, square.Position,ChessMoveType.Normal)))
-                            || (vm.PossibleMoves.Contains(new ChessMove(selectedSquare.Position, square.Position, ChessMoveType.EnPassant))))
+                            || (vm.PossibleMoves.Contains(new ChessMove(selectedSquare.Position, square.Position, ChessMoveType.EnPassant)))
+                            || (vm.PossibleMoves.Contains(promote1)))
                         {
                             square.IsHighlighted = true;
                         }

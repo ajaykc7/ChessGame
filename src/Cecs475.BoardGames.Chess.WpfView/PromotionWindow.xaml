@@ -1,0 +1,22 @@
+﻿<Window x:Class="Cecs475.BoardGames.Chess.WpfView.PromotionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cecs475.BoardGames.Chess.WpfView"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Title="PromotionWindow" Height="300" Width="300">
+    <Window.Resources>
+        <local:ChessViewModel x:Key="vm"/>
+        <!--<local:ChessPromotePieceConverter x:Key="PromotedPiece"/> -->
+    </Window.Resources>
+    <StackPanel DataContext="{StaticResource vm}">
+        <Label Content="Promote pawn to:"/>
+        <Border BorderThickness="1" BorderBrush="Black"
+                >
+            <ContentControl Content="{Binding CurrentPlayer, Converter={StaticResource PromotedPiece}}"/>
+        </Border>
+    </StackPanel>
+</Window>

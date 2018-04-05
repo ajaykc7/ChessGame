@@ -64,6 +64,9 @@
     <Compile Include="ChessViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PromotionWindow.xaml.cs">
+      <DependentUpon>PromotionWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -106,6 +109,10 @@
   <ItemGroup />
   <ItemGroup>
     <Page Include="ChessView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PromotionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
