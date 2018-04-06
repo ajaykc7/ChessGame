@@ -96,7 +96,22 @@ namespace Cecs475.BoardGames.Chess.WpfView
             }
         }
 
-        
+        private bool mIsKingInCheck;
+        public bool IsKingInCheck
+        {
+            get
+            {
+                return mIsKingInCheck;
+            }
+            set
+            {
+                if(value != mIsKingInCheck)
+                {
+                    mIsKingInCheck = value;
+                    OnPropertyChanged(nameof(IsKingInCheck));
+                }
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string name)
@@ -234,6 +249,19 @@ namespace Cecs475.BoardGames.Chess.WpfView
             {
                 mSquares[i].Player = mBoard.GetPlayerAtPosition(pos);
                 mSquares[i].ChessPiece = mBoard.GetPieceAtPosition(pos);
+                if ((mSquares[i].ChessPiece.PieceType == ChessPieceType.King)&&(mBoard.IsCheck)&& (mSquares[i].ChessPiece.Player == CurrentPlayer))
+                {
+                    //if (mSquares[i].ChessPiece.Player == CurrentPlayer)
+                    //{
+                        mSquares[i].IsKingInCheck = true;
+                    //}
+                    
+                    
+                }
+                else
+                {
+                    mSquares[i].IsKingInCheck = false;
+                }
                 i++;
             }
             //Update promotionSquares to the Current Player

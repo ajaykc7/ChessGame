@@ -53,6 +53,7 @@
                             <Binding Path="Position"/>
                             <Binding Path="IsSelected"/>
                             <Binding Path="IsHighlighted"/>
+                            <Binding Path="IsKingInCheck"/>
                         </MultiBinding>
                     </Border.Background>
                     <!-- 

@@ -14,8 +14,10 @@ namespace Cecs475.BoardGames.Chess.WpfView
     {
         private static SolidColorBrush CHECKERED_BRUSH_1 = Brushes.Brown;
         private static SolidColorBrush CHECKERED_BRUSH_2 = Brushes.BurlyWood;
-        private static SolidColorBrush SELECTED_SQUARE = Brushes.Red;
-        private static SolidColorBrush HOVERED_SQUARE = Brushes.Green;
+        private static SolidColorBrush SELECTED_SQUARE_BRUSH = Brushes.Red;
+        private static SolidColorBrush HOVERED_SQUARE_BRUSH = Brushes.Green;
+        private static SolidColorBrush INCHECK_SQUARE_BRUSH = Brushes.Yellow;
+
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             // This converter will receive two properties: the Position of the square, and whether it
@@ -24,16 +26,22 @@ namespace Cecs475.BoardGames.Chess.WpfView
 
             bool isSelected = (bool)values[1];
             bool isHighlighted = (bool)values[2];
+            bool isCheck = (bool)values[3];
 
             //Generate background colors that alternate
+
+            if (isCheck)
+            {
+                return INCHECK_SQUARE_BRUSH;
+            }
             if (isHighlighted)
             {
-                return HOVERED_SQUARE;
+                return HOVERED_SQUARE_BRUSH;
             }
 
             if (isSelected)
             {
-                return SELECTED_SQUARE;
+                return SELECTED_SQUARE_BRUSH;
             }
 
             
