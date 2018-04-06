@@ -15,8 +15,7 @@
     </Window.Resources>
     <StackPanel>
         <Label Content="Promote pawn to:"/>
-        <ItemsControl DataContext="{StaticResource vm}"
-                          ItemsSource="{Binding PromoteSquares}">
+        <ItemsControl ItemsSource="{Binding PromoteSquares}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="4" Rows="1" Background="Gray"/>

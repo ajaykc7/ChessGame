@@ -30,6 +30,7 @@ namespace Cecs475.BoardGames.Chess.WpfView
             StartPos = start;
             EndPos = end;
             InitializeComponent();
+            DataContext = ChessViewModel;
         }
 
         private void Border_MouseEnter(object sender, MouseEventArgs e)

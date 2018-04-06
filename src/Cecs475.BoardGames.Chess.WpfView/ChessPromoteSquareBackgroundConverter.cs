@@ -13,7 +13,7 @@ namespace Cecs475.BoardGames.Chess.WpfView
     class ChessPromoteSquareBackgroundConverter : IValueConverter
     {
         private static SolidColorBrush HOVERED_BRUSH = Brushes.Green;
-        private static SolidColorBrush DEFAULT_BRUSH = Brushes.Gray;
+        private static SolidColorBrush DEFAULT_BRUSH = Brushes.BurlyWood;
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
