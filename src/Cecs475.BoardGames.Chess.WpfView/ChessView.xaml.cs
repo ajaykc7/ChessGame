@@ -147,18 +147,20 @@ namespace Cecs475.BoardGames.Chess.WpfView
                     {
                         vm.StartBoardPosition = selectedSquare.Position;
                         //Check if move is pawn promotion
-                        if(vm.GetPieceAtPosition(vm.StartBoardPosition).PieceType == ChessPieceType.Pawn
+                        if (vm.GetPieceAtPosition(vm.StartBoardPosition).PieceType == ChessPieceType.Pawn
                             && ((vm.CurrentPlayer == 1 && vm.StartBoardPosition.Row == 1) ||
                             (vm.CurrentPlayer == 2 && vm.StartBoardPosition.Row == 6)))
                         {
                             PromotionWindow promoteWin = new PromotionWindow(vm, vm.StartBoardPosition, square.Position);
                             promoteWin.ShowDialog();
+                            //ChessPieceType checker = vm.PromotedPiece;
                         }
-                        else
-                        {
+                        //else
+                        //{
+
                             //Apply Move needs to have an extra param to take PieceType for the pawn to promote to
                             vm.ApplyMove(square.Position);
-                        }
+                        //}
                     }
                     selectedSquare = null;
                 }

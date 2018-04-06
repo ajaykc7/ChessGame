@@ -128,6 +128,7 @@ namespace Cecs475.BoardGames.Chess.WpfView
         private ChessBoard mBoard;
         private ObservableCollection<ChessSquare> mSquares;
         private ObservableCollection<ChessSquare> promotionSquares;
+        private ChessPieceType mPromotedPiece = ChessPieceType.Empty;
         public event EventHandler GameFinished;
 
         public ChessViewModel()
@@ -161,7 +162,8 @@ namespace Cecs475.BoardGames.Chess.WpfView
                     ChessPiece = new ChessPiece(pieceType[i], CurrentPlayer),
                 });
             }
-            
+
+            //mPromotedPiece = ;
 
             //PossibleMoves = new HashSet<ChessMove>(
             //    from ChessMove m in mBoard.GetPossibleMoves()
@@ -204,8 +206,24 @@ namespace Cecs475.BoardGames.Chess.WpfView
             {
                 if ((move.StartPosition.Equals(StartBoardPosition))&&(move.EndPosition.Equals(position)))
                 {
-                    mBoard.ApplyMove(move);
-                    break;
+                    //if ((move.EndPosition.Row==0)||(move.EndPosition.Row==7)
+                    //    &&(GetPieceAtPosition(move.StartPosition).PieceType==ChessPieceType.Pawn))
+                    //{
+                    if (!PromotedPiece.Equals(ChessPieceType.Empty))
+                    {
+                        if(move.PromoteTo == PromotedPiece)
+                        {
+                            mBoard.ApplyMove(move);
+                            break;
+                        }
+                    }
+                    //}
+                    else
+                    {
+                        mBoard.ApplyMove(move);
+                        break;
+                    }
+                    
                 }
             }
 
@@ -271,6 +289,7 @@ namespace Cecs475.BoardGames.Chess.WpfView
                 promotionSquares[j].ChessPiece = new ChessPiece(promotionSquares[j].ChessPiece.PieceType, CurrentPlayer);
             }
 
+            PromotedPiece = ChessPieceType.Empty;
             OnPropertyChanged(nameof(BoardAdvantage));
             OnPropertyChanged(nameof(CurrentPlayer));
             OnPropertyChanged(nameof(CanUndo));
@@ -326,6 +345,23 @@ namespace Cecs475.BoardGames.Chess.WpfView
         public BoardPosition StartBoardPosition
         {
             get; set;
+        }
+
+        public ChessPieceType PromotedPiece
+        {
+            get
+            {
+               return mPromotedPiece;
+            }
+            set
+            {
+                if(value!= mPromotedPiece)
+                {
+                    mPromotedPiece = value;
+                    OnPropertyChanged(nameof(PromotedPiece));
+                }
+            }
+            
         }
 
         /// <summary>

@@ -49,7 +49,14 @@ namespace Cecs475.BoardGames.Chess.WpfView
 
         private void Border_MouseUp(object sender, MouseEventArgs e)
         {
+            
             //Close window & return ChessPiece
+            Border b = sender as Border;
+            var square = b.DataContext as ChessSquare;
+
+            ChessViewModel.PromotedPiece = square.ChessPiece.PieceType;
+            //ChessViewModel.ApplyMove(EndPos,square.ChessPiece.PieceType);
+            this.Close();
         }
     }
     
