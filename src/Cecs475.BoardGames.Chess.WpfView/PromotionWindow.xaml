@@ -1,0 +1,38 @@
+﻿<Window x:Class="Cecs475.BoardGames.Chess.WpfView.PromotionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cecs475.BoardGames.Chess.WpfView"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Title="PromotionWindow" Height="101" Width="300">
+    <Window.Resources>
+        <local:ChessViewModel x:Key="vm"/>
+        <local:ChessSquarePlayerConverter x:Key="PromotedPiece"/>
+        <local:ChessPromoteSquareBackgroundConverter x:Key="BackgroundColor"/>
+    </Window.Resources>
+    <StackPanel>
+        <Label Content="Promote pawn to:"/>
+        <ItemsControl ItemsSource="{Binding PromoteSquares}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="4" Rows="1" Background="Gray"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="1" BorderBrush="Black"
+                            MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave"
+                            MouseUp="Border_MouseUp" 
+                            Background="{Binding IsHighlighted, Converter={StaticResource BackgroundColor}}">
+                        
+                        <ContentControl Content="{Binding ChessPiece, Converter={StaticResource PromotedPiece}}"/>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+
+        </ItemsControl>
+    </StackPanel>
+</Window>
