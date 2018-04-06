@@ -138,14 +138,27 @@ namespace Cecs475.BoardGames.Chess.WpfView
             }
             else
             {
-                //if the square that is not a possible move is selected, deselect the previous square
+                //if the square that is not a starting position of possible move is selected, deselect the previous square
                 if(selectedSquare != null)
                 {
                     selectedSquare.IsSelected = false;
+                    //True if square is ending position of possible move
                     if (square.IsHighlighted)
                     {
                         vm.StartBoardPosition = selectedSquare.Position;
-                        vm.ApplyMove(square.Position);
+                        //Check if move is pawn promotion
+                        if(vm.GetPieceAtPosition(vm.StartBoardPosition).PieceType == ChessPieceType.Pawn
+                            && ((vm.CurrentPlayer == 1 && vm.StartBoardPosition.Row == 1) ||
+                            (vm.CurrentPlayer == 2 && vm.StartBoardPosition.Row == 6)))
+                        {
+                            PromotionWindow promoteWin = new PromotionWindow(vm, vm.StartBoardPosition, square.Position);
+                            promoteWin.ShowDialog();
+                        }
+                        else
+                        {
+                            //Apply Move needs to have an extra param to take PieceType for the pawn to promote to
+                            vm.ApplyMove(square.Position);
+                        }
                     }
                     selectedSquare = null;
                 }

@@ -7,16 +7,33 @@
         mc:Ignorable="d"
         WindowStyle="None"
         ResizeMode="NoResize"
-        Title="PromotionWindow" Height="300" Width="300">
+        Title="PromotionWindow" Height="101" Width="300">
     <Window.Resources>
         <local:ChessViewModel x:Key="vm"/>
-        <!--<local:ChessPromotePieceConverter x:Key="PromotedPiece"/> -->
+        <local:ChessSquarePlayerConverter x:Key="PromotedPiece"/>
+        <local:ChessPromoteSquareBackgroundConverter x:Key="BackgroundColor"/>
     </Window.Resources>
-    <StackPanel DataContext="{StaticResource vm}">
+    <StackPanel>
         <Label Content="Promote pawn to:"/>
-        <Border BorderThickness="1" BorderBrush="Black"
-                >
-            <ContentControl Content="{Binding CurrentPlayer, Converter={StaticResource PromotedPiece}}"/>
-        </Border>
+        <ItemsControl DataContext="{StaticResource vm}"
+                          ItemsSource="{Binding PromoteSquares}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="4" Rows="1" Background="Gray"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="1" BorderBrush="Black"
+                            MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave"
+                            MouseUp="Border_MouseUp" 
+                            Background="{Binding IsHighlighted, Converter={StaticResource BackgroundColor}}">
+                        
+                        <ContentControl Content="{Binding ChessPiece, Converter={StaticResource PromotedPiece}}"/>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+
+        </ItemsControl>
     </StackPanel>
 </Window>

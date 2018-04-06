@@ -56,6 +56,7 @@
     <Compile Include="ChessAdvantageConverter.cs" />
     <Compile Include="ChessCurrentPlayerConverter.cs" />
     <Compile Include="ChessGameFactory.cs" />
+    <Compile Include="ChessPromoteSquareBackgroundConverter.cs" />
     <Compile Include="ChessSquareBackgroundConverter.cs" />
     <Compile Include="ChessSquarePlayerConverter.cs" />
     <Compile Include="ChessView.xaml.cs">

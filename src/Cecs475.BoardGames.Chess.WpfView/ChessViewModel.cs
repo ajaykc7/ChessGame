@@ -112,6 +112,7 @@ namespace Cecs475.BoardGames.Chess.WpfView
     {
         private ChessBoard mBoard;
         private ObservableCollection<ChessSquare> mSquares;
+        private ObservableCollection<ChessSquare> promotionSquares;
         public event EventHandler GameFinished;
 
         public ChessViewModel()
@@ -128,6 +129,25 @@ namespace Cecs475.BoardGames.Chess.WpfView
                     ChessPiece = mBoard.GetPieceAtPosition(pos)
                 })
             );
+
+            //Initialize squares to use for PromotionWindow
+            promotionSquares = new ObservableCollection<ChessSquare>();
+            var pieceType = new ObservableCollection<ChessPieceType>();
+            pieceType.Add(ChessPieceType.Rook);
+            pieceType.Add(ChessPieceType.Knight);
+            pieceType.Add(ChessPieceType.Bishop);
+            pieceType.Add(ChessPieceType.Queen);
+            for (int i = 0; i < 4; i++)
+            {
+                promotionSquares.Add(new ChessSquare()
+                {
+                    Position = new BoardPosition(0, i),
+                    Player = CurrentPlayer,
+                    ChessPiece = new ChessPiece(pieceType[i], CurrentPlayer),
+                });
+            }
+            
+
             //PossibleMoves = new HashSet<ChessMove>(
             //    from ChessMove m in mBoard.GetPossibleMoves()
             //    select m
@@ -216,6 +236,13 @@ namespace Cecs475.BoardGames.Chess.WpfView
                 mSquares[i].ChessPiece = mBoard.GetPieceAtPosition(pos);
                 i++;
             }
+            //Update promotionSquares to the Current Player
+            for(int j = 0; j < promotionSquares.Count; j++)
+            {
+                promotionSquares[j].Player = CurrentPlayer;
+                promotionSquares[j].ChessPiece = new ChessPiece(promotionSquares[j].ChessPiece.PieceType, CurrentPlayer);
+            }
+
             OnPropertyChanged(nameof(BoardAdvantage));
             OnPropertyChanged(nameof(CurrentPlayer));
             OnPropertyChanged(nameof(CanUndo));
@@ -228,6 +255,11 @@ namespace Cecs475.BoardGames.Chess.WpfView
 		public ObservableCollection<ChessSquare> Squares
         {
             get { return mSquares; }
+        }
+
+        public ObservableCollection<ChessSquare> PromoteSquares
+        {
+            get { return promotionSquares; }
         }
 
         /// <summary>

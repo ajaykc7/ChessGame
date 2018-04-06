@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cecs475.BoardGames.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +18,38 @@ namespace Cecs475.BoardGames.Chess.WpfView
     /// <summary>
     /// Interaction logic for PromotionWindow.xaml
     /// </summary>
+    /// Not sure if this needs to implement IWpfGameView
     public partial class PromotionWindow : Window
     {
-        public PromotionWindow()
+        public ChessViewModel ChessViewModel;
+        public BoardPosition StartPos;
+        public BoardPosition EndPos;
+        public PromotionWindow(ChessViewModel vm, BoardPosition start, BoardPosition end)
         {
+            ChessViewModel = vm;
+            StartPos = start;
+            EndPos = end;
             InitializeComponent();
         }
+
+        private void Border_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Border b = sender as Border;
+            var square = b.DataContext as ChessSquare;
+            square.IsHighlighted = true;
+        }
+
+        private void Border_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Border b = sender as Border;
+            var square = b.DataContext as ChessSquare;
+            square.IsHighlighted = false;
+        }
+
+        private void Border_MouseUp(object sender, MouseEventArgs e)
+        {
+            //Close window & return ChessPiece
+        }
     }
+    
 }
