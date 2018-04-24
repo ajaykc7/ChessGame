@@ -21,11 +21,21 @@ namespace Cecs475.BoardGames.WpfApp {
 	public partial class GameChoiceWindow : Window {
 		public GameChoiceWindow() {
 
-            Assembly ChessModelassembly = Assembly.LoadFrom("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games");
+            
             Type iGameFactory = typeof(IWpfGameFactory);
-            var boardTypes = AppDomain.CurrentDomain.GetAssemblies()
+
+            Assembly tttModelassembly = Assembly.LoadFrom("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games/Cecs475.BoardGames.TicTacToe.Model.dll");
+            Assembly chessModelassembly = Assembly.LoadFrom("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games/Cecs475.BoardGames.Chess.Model.dll");
+            Assembly othelloModelassembly = Assembly.LoadFrom("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games/Cecs475.BoardGames.Othello.Model.dll");
+            Assembly othelloViewassembly = Assembly.LoadFrom("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games/Cecs475.BoardGames.Othello.WpfView.dll");
+            Assembly chessViewassembly = Assembly.LoadFrom("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games/Cecs475.BoardGames.Chess.WpfView.dll");
+            Assembly tttViewassembly = Assembly.LoadFrom("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games/Cecs475.BoardGames.TicTacToe.WpfView.dll");
+
+            var gameTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.GetTypes())
                 .Where(t => iGameFactory.IsAssignableFrom(t) && t.IsClass);
+            Console.WriteLine("Found these IGameBoard types:");
+            Console.WriteLine(string.Join(",\n", gameTypes));
 
             InitializeComponent();
 		}
