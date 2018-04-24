@@ -20,7 +20,14 @@ namespace Cecs475.BoardGames.WpfApp {
 	/// </summary>
 	public partial class GameChoiceWindow : Window {
 		public GameChoiceWindow() {
-			InitializeComponent();
+
+            Assembly ChessModelassembly = Assembly.LoadFrom("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games");
+            Type iGameFactory = typeof(IWpfGameFactory);
+            var boardTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a => a.GetTypes())
+                .Where(t => iGameFactory.IsAssignableFrom(t) && t.IsClass);
+
+            InitializeComponent();
 		}
 
 		private void Button_Click(object sender, RoutedEventArgs e) {
