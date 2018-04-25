@@ -34,8 +34,8 @@ namespace Cecs475.BoardGames.WpfApp {
             var gameTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.GetTypes())
                 .Where(t => iGameFactory.IsAssignableFrom(t) && t.IsClass);
-            Console.WriteLine("Found these IGameBoard types:");
-            Console.WriteLine(string.Join(",\n", gameTypes));
+
+            var constructorList = gameTypes.Select(c => c.GetConstructor(Type.EmptyTypes));
 
             InitializeComponent();
 		}
