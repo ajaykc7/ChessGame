@@ -1,6 +1,7 @@
 ﻿using Cecs475.BoardGames.WpfView;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -15,20 +16,37 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace Cecs475.BoardGames.WpfApp {
-	/// <summary>
-	/// Interaction logic for GameChoiceWindow.xaml
-	/// </summary>
-	public partial class GameChoiceWindow : Window {
-		public GameChoiceWindow() {
+    /// <summary>
+    /// Interaction logic for GameChoiceWindow.xaml
+    /// </summary>
+    public partial class GameChoiceWindow : Window {
+        public GameChoiceWindow() {
 
-            Assembly ChessModelassembly = Assembly.LoadFrom("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games");
+            //Assembly ChessModelassembly = Assembly.LoadFrom("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games");
+            GameTypes = new List<IWpfGameFactory>();
             Type iGameFactory = typeof(IWpfGameFactory);
+            var files = Directory.GetFiles("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games", "*.dll");
+            foreach (var dll in files)
+            {
+                Assembly.LoadFrom(dll);
+            }
+
             var boardTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.GetTypes())
                 .Where(t => iGameFactory.IsAssignableFrom(t) && t.IsClass);
 
+
+            foreach (var type in boardTypes)
+            {
+                var boardConstr = type.GetConstructor(Type.EmptyTypes);
+                GameTypes.Add((IWpfGameFactory)boardConstr.Invoke(new object[0]));
+                //GameTypes.Add((IWpfGameFactory)Activator.CreateInstance(type));
+            }
+
             InitializeComponent();
-		}
+        }
+
+        private List<IWpfGameFactory> GameTypes { get; set; }
 
 		private void Button_Click(object sender, RoutedEventArgs e) {
 			Button b = sender as Button;
