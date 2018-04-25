@@ -43,6 +43,7 @@ namespace Cecs475.BoardGames.WpfApp {
                 //GameTypes.Add((IWpfGameFactory)Activator.CreateInstance(type));
             }
 
+            this.Resources.Add("GameTypes", GameTypes);
             InitializeComponent();
         }
 
