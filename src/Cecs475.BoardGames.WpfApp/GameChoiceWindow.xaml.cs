@@ -22,6 +22,7 @@ namespace Cecs475.BoardGames.WpfApp {
     public partial class GameChoiceWindow : Window {
         public GameChoiceWindow() {
 
+
             //Assembly ChessModelassembly = Assembly.LoadFrom("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games");
             GameTypes = new List<IWpfGameFactory>();
             Type iGameFactory = typeof(IWpfGameFactory);
@@ -44,6 +45,7 @@ namespace Cecs475.BoardGames.WpfApp {
             }
 
             this.Resources.Add("GameTypes", GameTypes);
+
             InitializeComponent();
         }
 
