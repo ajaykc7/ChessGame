@@ -22,31 +22,47 @@ namespace Cecs475.BoardGames.WpfApp {
     public partial class GameChoiceWindow : Window {
         public GameChoiceWindow() {
 
-
-            //Assembly ChessModelassembly = Assembly.LoadFrom("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games");
-            GameTypes = new List<IWpfGameFactory>();
-            Type iGameFactory = typeof(IWpfGameFactory);
-            var files = Directory.GetFiles("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games", "*.dll");
-            foreach (var dll in files)
+            try
             {
-                Assembly.LoadFrom(dll);
+                // your code
+                //Assembly ChessModelassembly = Assembly.LoadFrom("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games");
+                GameTypes = new List<IWpfGameFactory>();
+                Type iGameFactory = typeof(IWpfGameFactory);
+                var files = Directory.GetFiles("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games", "*.dll");
+                foreach (var dll in files)
+                {
+                    Assembly.LoadFrom(dll);
+                }
+
+                var boardTypes = AppDomain.CurrentDomain.GetAssemblies()
+                    .SelectMany(a => a.GetTypes())
+                    .Where(t => iGameFactory.IsAssignableFrom(t) && t.IsClass);
+
+                foreach (var type in boardTypes)
+                {
+                    var boardConstr = type.GetConstructor(Type.EmptyTypes);
+                    GameTypes.Add((IWpfGameFactory)boardConstr.Invoke(new object[0]));
+                    //GameTypes.Add((IWpfGameFactory)Activator.CreateInstance(type));
+                }
+
+                this.Resources.Add("GameTypes", GameTypes);
+
+                InitializeComponent();
             }
-
-            var boardTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a => a.GetTypes())
-                .Where(t => iGameFactory.IsAssignableFrom(t) && t.IsClass);
-
-
-            foreach (var type in boardTypes)
+            catch (ReflectionTypeLoadException ex)
             {
-                var boardConstr = type.GetConstructor(Type.EmptyTypes);
-                GameTypes.Add((IWpfGameFactory)boardConstr.Invoke(new object[0]));
-                //GameTypes.Add((IWpfGameFactory)Activator.CreateInstance(type));
+                // now look at ex.LoaderExceptions - this is an Exception[], so:
+                foreach (Exception inner in ex.LoaderExceptions)
+                {
+                    // write details of "inner", in particular inner.Message
+                    MessageBox.Show(inner.ToString());
+
+                }
             }
+            
 
-            this.Resources.Add("GameTypes", GameTypes);
 
-            InitializeComponent();
+            
         }
 
         private List<IWpfGameFactory> GameTypes { get; set; }
