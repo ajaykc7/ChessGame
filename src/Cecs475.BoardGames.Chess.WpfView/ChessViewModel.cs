@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cecs475.BoardGames.ComputerOpponent;
 
 namespace Cecs475.BoardGames.Chess.WpfView
 {
@@ -130,6 +131,8 @@ namespace Cecs475.BoardGames.Chess.WpfView
         private ObservableCollection<ChessSquare> promotionSquares;
         private ChessPieceType mPromotedPiece = ChessPieceType.Empty;
         public event EventHandler GameFinished;
+        private const int MAX_AI_DEPTH = 4;
+        private IGameAi mGameAi = new MinimaxAi(MAX_AI_DEPTH);
 
         public ChessViewModel()
         {
@@ -224,6 +227,15 @@ namespace Cecs475.BoardGames.Chess.WpfView
                         break;
                     }
                     
+                }
+            }
+
+            if (Players == NumberOfPlayers.One && !mBoard.IsFinished)
+            {
+                var bestMove = mGameAi.FindBestMove(mBoard);
+                if (bestMove != null)
+                {
+                    mBoard.ApplyMove(bestMove as ChessMove);
                 }
             }
 
@@ -371,6 +383,8 @@ namespace Cecs475.BoardGames.Chess.WpfView
 
         public bool CanUndo => mBoard.MoveHistory.Any();
 
+        public NumberOfPlayers Players { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string name)
@@ -383,6 +397,12 @@ namespace Cecs475.BoardGames.Chess.WpfView
             if (CanUndo)
             {
                 mBoard.UndoLastMove();
+                // In one-player mode, Undo has to remove an additional move to return to the
+                // human player's turn.
+                if (Players == NumberOfPlayers.One && CanUndo)
+                {
+                    mBoard.UndoLastMove();
+                }
                 RebindState();
             }
         }
