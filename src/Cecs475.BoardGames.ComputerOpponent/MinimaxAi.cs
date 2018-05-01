@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Cecs475.BoardGames.ComputerOpponent {
 	internal struct MinimaxBestMove {
-		public int Weight { get; set; }
+		public long Weight { get; set; }
 		public IGameMove Move { get; set; }
 	}
 
@@ -25,10 +25,49 @@ namespace Cecs475.BoardGames.ComputerOpponent {
 		}
 
 		private static MinimaxBestMove FindBestMove(IGameBoard b, int alpha, int beta, int depthLeft) {
-			return new MinimaxBestMove() {
-				Move = null
-			};
+            //return new MinimaxBestMove() {
+            //	Move = null
+            //};
+            return FindBestMove(b, depthLeft, true);
 		}
+
+        private static MinimaxBestMove FindBestMove(IGameBoard b, int depthLeft, bool isMaximizing)
+        {
+
+            if (depthLeft == 0)
+            {
+                return new MinimaxBestMove()
+                {
+                    Weight = b.BoardWeight,
+                    Move = null
+                };
+            }
+
+            long bestWeight = isMaximizing ? long.MinValue : long.MaxValue;
+            IGameMove bestMove = null;
+
+            foreach (IGameMove move in b.GetPossibleMoves())
+            {
+                b.ApplyMove(move);
+                MinimaxBestMove w = FindBestMove(b, depthLeft - 1, !isMaximizing);
+                b.UndoLastMove();
+                if(isMaximizing && (w.Weight> bestWeight))
+                {
+                    bestWeight = w.Weight;
+                    bestMove = move;
+                }else if((!isMaximizing) && (w.Weight < bestWeight))
+                {
+                    bestWeight = w.Weight;
+                    bestMove = move;
+                }
+            }
+
+            return new MinimaxBestMove()
+            {
+                Weight = bestWeight,
+                Move = bestMove
+            };
+        }
 
 	}
 }
