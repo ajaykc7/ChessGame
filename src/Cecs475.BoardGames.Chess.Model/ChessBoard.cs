@@ -230,8 +230,8 @@ namespace Cecs475.BoardGames.Chess.Model
             {
                 int pawnMovementPointDifference = PawnMovementPoint(1) - PawnMovementPoint(2);
                 long threatenedPointDifference = ThreatenPoint(1) - ThreatenPoint(2);
-
-                return pawnMovementPointDifference;
+                
+                return threatenedPointDifference;
             }
         }
         #endregion
@@ -1870,6 +1870,12 @@ namespace Cecs475.BoardGames.Chess.Model
             return point;
         }
 
+        /// <summary>
+        /// One of the method to calculate the board weight. Return the point based
+        /// on the opponent's pieces that the "player" threatens
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
         private long ThreatenPoint(int player)
         {
             long point = 0;
@@ -1883,7 +1889,7 @@ namespace Cecs475.BoardGames.Chess.Model
                 }else if (piece == ChessPieceType.Rook)
                 {
                     point += 2;
-                }else if(piece == ChessPieceType.Rook)
+                }else if(piece == ChessPieceType.Queen)
                 {
                     point += 5;
                 }else if(piece == ChessPieceType.King)
@@ -1894,7 +1900,50 @@ namespace Cecs475.BoardGames.Chess.Model
             return point;
         }
 
-         
+        private long ProtectPoint(int player)
+        {
+            int enemy = (player == 1) ? 2 : 1;
+
+            var knightPositions = GetPositionsOfPiece(ChessPieceType.Knight, player);
+            var bishopPositions = GetPositionsOfPiece(ChessPieceType.Bishop, player);
+
+            //set all knight positions with enemy position
+            foreach (BoardPosition pos in knightPositions)
+            {
+                SetPieceAtPosition(pos, GetPieceAtPosition(pos));
+                SetPieceAtPosition(pos, new ChessPiece(ChessPieceType.Pawn, enemy));
+            }
+
+            //set all bishop positions with enemy position
+            foreach (BoardPosition pos in bishopPositions)
+            {
+                SetPieceAtPosition(pos, GetPieceAtPosition(pos));
+                SetPieceAtPosition(pos, new ChessPiece(ChessPieceType.Pawn, enemy));
+            }
+
+            //All current player's positions
+            var playerPositions = BoardPosition.GetRectangularPositions(BoardSize, BoardSize)
+                .Where(m => GetPlayerAtPosition(m) == player);
+            
+            foreach(BoardPosition knightPos in knightPositions)
+            {
+                foreach (BoardPosition pos in playerPositions)
+                {
+                    var piece = GetPieceAtPosition(pos).PieceType;
+                    if (piece == ChessPieceType.Pawn)
+                    {
+                        if (GetPossiblePawnMoves(pos).ToList().Contains(knightPos))
+                        {
+
+                        }
+                }
+                }
+            }
+            
+
+
+        }
+       
         #endregion
 
         // You may or may not need to add code to this constructor.

@@ -245,7 +245,7 @@ namespace Cecs475.BoardGames.Chess.WpfView
             }
 
 
-            
+            MessageBox.Show(mBoard.BoardWeight.ToString());
 
             if (mBoard.IsFinished)
             {
