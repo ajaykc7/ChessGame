@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Cecs475.BoardGames.ComputerOpponent">
+      <HintPath>..\Cecs475.BoardGames.ComputerOpponent\bin\Debug\netstandard2.0\Cecs475.BoardGames.ComputerOpponent.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -56,7 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cecs475.BoardGames.Model\Cecs475.BoardGames.Model.csproj">
-      <Project>{E30836FA-92E0-4787-9237-DC750C339FB9}</Project>
+      <Project>{ad3670ac-f179-44fd-b2c4-2bf0c6819355}</Project>
       <Name>Cecs475.BoardGames.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cecs475.BoardGames.TicTacToe.Model\Cecs475.BoardGames.TicTacToe.Model.csproj">

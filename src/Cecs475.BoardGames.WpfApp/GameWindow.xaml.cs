@@ -6,12 +6,13 @@ using System.Windows.Data;
 
 namespace Cecs475.BoardGames.WpfApp {
 	public partial class GameWindow : Window {
-		/// <summary>
-		/// Creates a GameWindow containing the given game View control.
-		/// </summary>
-		public GameWindow(IWpfGameFactory factory) {
-			// Set the DynamicResource named GameView to the given control.
-			var gameView = factory.CreateGameView();
+        /// <summary>
+        /// Creates a GameWindow containing the given game View control.
+        /// </summary>
+        public GameWindow(IWpfGameFactory factory, NumberOfPlayers players)
+        {
+            // Set the DynamicResource named GameView to the given control.
+            var gameView = factory.CreateGameView(players);
 			this.Resources.Add("GameView", gameView.ViewControl);
 			this.Resources.Add("ViewModel", gameView.ViewModel);
 
