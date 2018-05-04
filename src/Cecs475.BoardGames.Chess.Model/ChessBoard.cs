@@ -220,6 +220,20 @@ namespace Cecs475.BoardGames.Chess.Model
                 }
             }
         }
+
+        /// <summary>
+        /// Property to signfy the weight of the current board state to determine AI move
+        /// </summary>
+        public long BoardWeight
+        {
+            get
+            {
+                int pawnMovementPointDifference = PawnMovementPoint(1) - PawnMovementPoint(2);
+                long threatenedPointDifference = ThreatenPoint(1) - ThreatenPoint(2);
+
+                return pawnMovementPointDifference;
+            }
+        }
         #endregion
 
 
@@ -711,6 +725,8 @@ namespace Cecs475.BoardGames.Chess.Model
             //Change the currentPlayer to opposite player after the move
             CurrentPlayer = (CurrentPlayer == 1) ? 2 : 1;
 
+            //Update the boardWeight    
+            //BoardWeight = 
         }
 
 
@@ -1833,6 +1849,52 @@ namespace Cecs475.BoardGames.Chess.Model
             ApplyMove(m as ChessMove);
         }
         IReadOnlyList<IGameMove> IGameBoard.MoveHistory => mMoveHistory;
+
+        
+        /// <summary>
+        /// One of the method to calculate the board weight. Calculates the point 
+        /// based on the "player" pawn movement. 
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
+        private int PawnMovementPoint(int player)
+        {
+            int point = 0;
+            int startingRow = player == 1 ? 6 : 1;
+            IEnumerable<BoardPosition> pawnPositions = GetPositionsOfPiece(ChessPieceType.Pawn, player);
+            foreach(BoardPosition pos in pawnPositions)
+            {
+                point += Math.Abs(pos.Row - startingRow);
+            }
+
+            return point;
+        }
+
+        private long ThreatenPoint(int player)
+        {
+            long point = 0;
+            var threatenedPositions = GetAttackedPositions(player);
+            foreach(BoardPosition pos in threatenedPositions)
+            {
+                ChessPieceType piece = GetPieceAtPosition(pos).PieceType;
+                if((piece == ChessPieceType.Knight)||(piece == ChessPieceType.Bishop))
+                {
+                    point += 1;
+                }else if (piece == ChessPieceType.Rook)
+                {
+                    point += 2;
+                }else if(piece == ChessPieceType.Rook)
+                {
+                    point += 5;
+                }else if(piece == ChessPieceType.King)
+                {
+                    point += 4;
+                }
+            }
+            return point;
+        }
+
+         
         #endregion
 
         // You may or may not need to add code to this constructor.

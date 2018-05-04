@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cecs475.BoardGames.ComputerOpponent;
+using System.Diagnostics;
+using System.Windows;
 
 namespace Cecs475.BoardGames.Chess.WpfView
 {
@@ -230,6 +232,8 @@ namespace Cecs475.BoardGames.Chess.WpfView
                 }
             }
 
+            RebindState();
+
             if (Players == NumberOfPlayers.One && !mBoard.IsFinished)
             {
                 var bestMove = mGameAi.FindBestMove(mBoard);
@@ -237,9 +241,11 @@ namespace Cecs475.BoardGames.Chess.WpfView
                 {
                     mBoard.ApplyMove(bestMove as ChessMove);
                 }
+                RebindState();
             }
 
-            RebindState();
+
+            
 
             if (mBoard.IsFinished)
             {
