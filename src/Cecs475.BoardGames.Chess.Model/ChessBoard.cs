@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Cecs475.BoardGames.Model;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Cecs475.BoardGames.Chess.Model
 {
@@ -230,8 +231,8 @@ namespace Cecs475.BoardGames.Chess.Model
             {
                 int pawnMovementPointDifference = PawnMovementPoint(1) - PawnMovementPoint(2);
                 long threatenedPointDifference = ThreatenPoint(1) - ThreatenPoint(2);
-                
-                return threatenedPointDifference;
+                long protectPointDifference = ProtectPoint(1)- ProtectPoint(2); 
+                return pawnMovementPointDifference+threatenedPointDifference+protectPointDifference+CurrentAdvantage.Advantage;
             }
         }
         #endregion
@@ -1910,35 +1911,29 @@ namespace Cecs475.BoardGames.Chess.Model
             var protectPositions = new List<BoardPosition>();
             protectPositions.AddRange(GetPositionsOfPiece(ChessPieceType.Knight, player));
             protectPositions.AddRange(GetPositionsOfPiece(ChessPieceType.Bishop, player));
-            /*
-            var knightPositions = GetPositionsOfPiece(ChessPieceType.Knight, player);
-            var bishopPositions = GetPositionsOfPiece(ChessPieceType.Bishop, player);
-            */
+            
+            //All given player's possible moves
+            var playerMoves = new List<ChessMove>();
 
-            /*
+            //Temporarily make the protected pieces enemies
+            foreach (BoardPosition pos in protectPositions)
+            {
+               
+                SetPieceAtPosition(pos, new ChessPiece(GetPieceAtPosition(pos).PieceType, enemy));
+                SetPieceAtPosition(pos, new ChessPiece(GetPieceAtPosition(pos).PieceType, player));
+            }
+
             //All current player's positions
             var playerPositions = BoardPosition.GetRectangularPositions(BoardSize, BoardSize)
                 .Where(m => GetPlayerAtPosition(m) == player);
-            */
 
-            //All given player's possible moves
-            var playerMoves = new List<ChessMove>();
-            var checkPos = BoardPosition.GetRectangularPositions(BoardSize, BoardSize);
-            foreach (var pos in checkPos)
+            
+            //get all possible moves for the player
+            foreach (BoardPosition pos in playerPositions)
             {
-                //Player Positions
-                if(GetPlayerAtPosition(pos) == player)
-                {
-                    //Temporarily make the protected pieces enemies
-                    if(GetPieceAtPosition(pos).PieceType == ChessPieceType.Bishop
-                        || GetPieceAtPosition(pos).PieceType == ChessPieceType.Knight)
-                    {
-                        SetPieceAtPosition(pos, new ChessPiece(GetPieceAtPosition(pos).PieceType, enemy));
-                    }
-                    playerMoves.AddRange(GetPossiblePawnMoves(pos));
-                    playerMoves.AddRange(GetPossibleStraightMoves(pos, false));
-                    playerMoves.AddRange(GetPossibleKnightMoves(pos));
-                }
+                playerMoves.AddRange(GetPossiblePawnMoves(pos));
+                playerMoves.AddRange(GetPossibleStraightMoves(pos, false));
+                playerMoves.AddRange(GetPossibleKnightMoves(pos));
             }
 
             foreach (var pos in protectPositions)
@@ -1949,50 +1944,16 @@ namespace Cecs475.BoardGames.Chess.Model
                     if(moves.EndPosition == pos)
                     {
                         protect++;
+                        
                     }
                 }
                 //Revert the protected pieces back to allies
                 SetPieceAtPosition(pos, new ChessPiece(GetPieceAtPosition(pos).PieceType, player));
+                SetPieceAtPosition(pos, new ChessPiece(GetPieceAtPosition(pos).PieceType, enemy));
             }
 
             return protect;
-
-            /*
-            //set all knight positions with enemy position
-            foreach (BoardPosition pos in knightPositions)
-            {
-                SetPieceAtPosition(pos, GetPieceAtPosition(pos));
-                SetPieceAtPosition(pos, new ChessPiece(ChessPieceType.Pawn, enemy));
-            }
-
-            //set all bishop positions with enemy position
-            foreach (BoardPosition pos in bishopPositions)
-            {
-                SetPieceAtPosition(pos, GetPieceAtPosition(pos));
-                SetPieceAtPosition(pos, new ChessPiece(ChessPieceType.Pawn, enemy));
-            }
-            */
             
-            
-            /*
-            foreach(BoardPosition knightPos in knightPositions)
-            {
-                foreach (BoardPosition pos in playerPositions)
-                {
-                    var piece = GetPieceAtPosition(pos).PieceType;
-                    if (piece == ChessPieceType.Pawn)
-                    {
-                        if (GetPossiblePawnMoves(pos).ToList().Contains(knightPos))
-                        {
-
-                        }
-                }
-                }
-            }
-            */
-            
-
-
         }
        
         #endregion
