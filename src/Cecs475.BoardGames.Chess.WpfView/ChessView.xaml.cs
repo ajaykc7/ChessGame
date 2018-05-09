@@ -92,7 +92,7 @@ namespace Cecs475.BoardGames.Chess.WpfView
             square.IsHighlighted = false;
         }
 
-        private void Border_MouseUp(object sender, MouseButtonEventArgs e)
+        private async void Border_MouseUp(object sender, MouseButtonEventArgs e)
         {
             Border b = sender as Border;
             var square = b.DataContext as ChessSquare;
@@ -158,8 +158,10 @@ namespace Cecs475.BoardGames.Chess.WpfView
                         //else
                         //{
 
-                            //Apply Move needs to have an extra param to take PieceType for the pawn to promote to
-                            vm.ApplyMove(square.Position);
+                        this.IsEnabled = false;
+                        //Apply Move needs to have an extra param to take PieceType for the pawn to promote to
+                        await vm.ApplyMove(square.Position);
+                        this.IsEnabled = true;
                         //}
                     }
                     selectedSquare = null;
