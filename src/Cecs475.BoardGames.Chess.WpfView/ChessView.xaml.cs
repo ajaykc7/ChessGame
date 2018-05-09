@@ -1,5 +1,6 @@
 ﻿using Cecs475.BoardGames.Chess.Model;
 using Cecs475.BoardGames.WpfView;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -157,10 +158,12 @@ namespace Cecs475.BoardGames.Chess.WpfView
                         }
                         //else
                         //{
-
+                        Window parentWindow = Window.GetWindow(this);
+                        parentWindow.IsEnabled = false;
                         this.IsEnabled = false;
                         //Apply Move needs to have an extra param to take PieceType for the pawn to promote to
                         await vm.ApplyMove(square.Position);
+                        parentWindow.IsEnabled = true;
                         this.IsEnabled = true;
                         //}
                     }

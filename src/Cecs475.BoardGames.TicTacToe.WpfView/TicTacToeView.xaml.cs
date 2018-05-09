@@ -37,7 +37,10 @@ namespace Cecs475.BoardGames.TicTacToe.WpfView {
 			var square = b.DataContext as TicTacToeSquare;
 			var vm = FindResource("vm") as TicTacToeViewModel;
 			if (vm.PossibleMoves.Contains(square.Position)) {
-				await vm.ApplyMove(square.Position);
+                Window parentWindow = Window.GetWindow(this);
+                parentWindow.IsEnabled = false;
+                await vm.ApplyMove(square.Position);
+                parentWindow.IsEnabled = true;
 				b.Background = GREEN_BRUSH;
 			}
 		}
