@@ -32,12 +32,12 @@ namespace Cecs475.BoardGames.TicTacToe.WpfView {
 			InitializeComponent();
 		}
 
-		private void Border_MouseUp(object sender, MouseButtonEventArgs e) {
+		private async void Border_MouseUp(object sender, MouseButtonEventArgs e) {
 			Border b = sender as Border;
 			var square = b.DataContext as TicTacToeSquare;
 			var vm = FindResource("vm") as TicTacToeViewModel;
 			if (vm.PossibleMoves.Contains(square.Position)) {
-				vm.ApplyMove(square.Position);
+				await vm.ApplyMove(square.Position);
 				b.Background = GREEN_BRUSH;
 			}
 		}

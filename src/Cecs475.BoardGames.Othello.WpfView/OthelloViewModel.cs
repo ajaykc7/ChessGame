@@ -8,6 +8,7 @@ using System;
 using Cecs475.BoardGames.Othello.Model;
 using Cecs475.BoardGames.Model;
 using Cecs475.BoardGames.ComputerOpponent;
+using System.Threading.Tasks;
 
 namespace Cecs475.BoardGames.Othello.WpfView {
 	/// <summary>
@@ -87,7 +88,7 @@ namespace Cecs475.BoardGames.Othello.WpfView {
 		/// <summary>
 		/// Applies a move for the current player at the given position.
 		/// </summary>
-		public void ApplyMove(BoardPosition position) {
+		public async Task ApplyMove(BoardPosition position) {
 			var possMoves = mBoard.GetPossibleMoves() as IEnumerable<OthelloMove>;
 			// Validate the move as possible.
 			foreach (var move in possMoves) {
@@ -100,8 +101,12 @@ namespace Cecs475.BoardGames.Othello.WpfView {
             RebindState();
 
             if (Players == NumberOfPlayers.One && !mBoard.IsFinished) {
-				var bestMove = mGameAi.FindBestMove(mBoard);
-				if (bestMove != null) {
+
+                var bestMoveTask = Task.Run(() => mGameAi.FindBestMove(mBoard));
+
+                var bestMove = await bestMoveTask;
+
+                if (bestMove != null) {
 					mBoard.ApplyMove(bestMove as OthelloMove);
 				}
                 RebindState();
