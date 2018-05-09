@@ -26,15 +26,15 @@ namespace Cecs475.BoardGames.ComputerOpponent {
 
 		private static MinimaxBestMove FindBestMove(IGameBoard b, int alpha, int beta, int depthLeft) {
             //return new MinimaxBestMove() {
-            //	Move = null
+            	//Move = null
             //};
-            return FindBestMove(b, depthLeft, false);
+            return FindBestMove(b, depthLeft, b.CurrentPlayer==1, alpha, beta);
 		}
 
-        private static MinimaxBestMove FindBestMove(IGameBoard b, int depthLeft, bool isMaximizing)
+        private static MinimaxBestMove FindBestMove(IGameBoard b, int depthLeft, bool isMaximizing, int alpha, int beta)
         {
 
-            if ((depthLeft == 0)||(b.IsFinished))
+            if (depthLeft == 0 || b.IsFinished)
             {
                 return new MinimaxBestMove()
                 {
@@ -43,30 +43,55 @@ namespace Cecs475.BoardGames.ComputerOpponent {
                 };
             }
 
-            long bestWeight = isMaximizing == true ? long.MinValue : long.MaxValue;
+            long bestWeight = isMaximizing ? long.MinValue : long.MaxValue;
             IGameMove bestMove = null;
 
             foreach (IGameMove move in b.GetPossibleMoves())
             {
                 b.ApplyMove(move);
-                MinimaxBestMove w = FindBestMove(b, depthLeft - 1, !isMaximizing);
+                MinimaxBestMove w = FindBestMove(b, depthLeft - 1, !isMaximizing, alpha, beta);
                 b.UndoLastMove();
-                if((isMaximizing) && (w.Weight> bestWeight))
+                if(isMaximizing && w.Weight > bestWeight)
+                //if (isMaximizing && w.Weight > alpha)
                 {
                     bestWeight = w.Weight;
                     bestMove = move;
-                }else if((!isMaximizing) && (w.Weight < bestWeight))
+                    alpha = (int) w.Weight;
+                    
+                }else if(!isMaximizing && w.Weight < bestWeight)
+                //else if (!isMaximizing && w.Weight < beta)
                 {
                     bestWeight = w.Weight;
                     bestMove = move;
+                    beta = (int)w.Weight;
+                }
+                
+                if(!(alpha < beta))
+                {
+                    if(isMaximizing)
+                    {
+                        return new MinimaxBestMove()
+                        {
+                            Weight = beta,
+                            Move = bestMove
+                        };
+                    }
+                    else
+                    {
+                        return new MinimaxBestMove()
+                        {
+                            Weight = alpha,
+                            Move = bestMove
+                        };
+                    }
                 }
             }
-
             return new MinimaxBestMove()
             {
                 Weight = bestWeight,
                 Move = bestMove
             };
+
         }
 
 	}

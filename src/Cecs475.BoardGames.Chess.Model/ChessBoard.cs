@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Cecs475.BoardGames.Model;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Cecs475.BoardGames.Chess.Model
 {
@@ -218,6 +219,20 @@ namespace Cecs475.BoardGames.Chess.Model
                 {
                     mDrawCounter = 0;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Property to signfy the weight of the current board state to determine AI move
+        /// </summary>
+        public long BoardWeight
+        {
+            get
+            {
+                int pawnMovementPointDifference = PawnMovementPoint(1) - PawnMovementPoint(2);
+                long threatenedPointDifference = ThreatenPoint(1) - ThreatenPoint(2);
+                long protectPointDifference = ProtectPoint(1)- ProtectPoint(2); 
+                return pawnMovementPointDifference+threatenedPointDifference+protectPointDifference+CurrentAdvantage.Advantage;
             }
         }
         #endregion
@@ -711,6 +726,8 @@ namespace Cecs475.BoardGames.Chess.Model
             //Change the currentPlayer to opposite player after the move
             CurrentPlayer = (CurrentPlayer == 1) ? 2 : 1;
 
+            //Update the boardWeight    
+            //BoardWeight = 
         }
 
 
@@ -1833,6 +1850,112 @@ namespace Cecs475.BoardGames.Chess.Model
             ApplyMove(m as ChessMove);
         }
         IReadOnlyList<IGameMove> IGameBoard.MoveHistory => mMoveHistory;
+
+        
+        /// <summary>
+        /// One of the method to calculate the board weight. Calculates the point 
+        /// based on the "player" pawn movement. 
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
+        private int PawnMovementPoint(int player)
+        {
+            int point = 0;
+            int startingRow = player == 1 ? 6 : 1;
+            IEnumerable<BoardPosition> pawnPositions = GetPositionsOfPiece(ChessPieceType.Pawn, player);
+            foreach(BoardPosition pos in pawnPositions)
+            {
+                point += Math.Abs(pos.Row - startingRow);
+            }
+
+            return point;
+        }
+
+        /// <summary>
+        /// One of the method to calculate the board weight. Return the point based
+        /// on the opponent's pieces that the "player" threatens
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
+        private long ThreatenPoint(int player)
+        {
+            long point = 0;
+            var threatenedPositions = GetAttackedPositions(player);
+            foreach(BoardPosition pos in threatenedPositions)
+            {
+                ChessPieceType piece = GetPieceAtPosition(pos).PieceType;
+                if((piece == ChessPieceType.Knight)||(piece == ChessPieceType.Bishop))
+                {
+                    point += 1;
+                }else if (piece == ChessPieceType.Rook)
+                {
+                    point += 2;
+                }else if(piece == ChessPieceType.Queen)
+                {
+                    point += 5;
+                }else if(piece == ChessPieceType.King)
+                {
+                    point += 4;
+                }
+            }
+            return point;
+        }
+
+        private long ProtectPoint(int player)
+        {
+            //Note: I avoid using LINQ & try to use the least number of loops possible for efficiency
+
+            int enemy = (player == 1) ? 2 : 1;
+            long protect = 0;
+
+            var protectPositions = new List<BoardPosition>();
+            protectPositions.AddRange(GetPositionsOfPiece(ChessPieceType.Knight, player));
+            protectPositions.AddRange(GetPositionsOfPiece(ChessPieceType.Bishop, player));
+            
+            //All given player's possible moves
+            var playerMoves = new List<ChessMove>();
+
+            //Temporarily make the protected pieces enemies
+            foreach (BoardPosition pos in protectPositions)
+            {
+               
+                SetPieceAtPosition(pos, new ChessPiece(GetPieceAtPosition(pos).PieceType, enemy));
+                SetPieceAtPosition(pos, new ChessPiece(GetPieceAtPosition(pos).PieceType, player));
+            }
+
+            //All current player's positions
+            var playerPositions = BoardPosition.GetRectangularPositions(BoardSize, BoardSize)
+                .Where(m => GetPlayerAtPosition(m) == player);
+
+            
+            //get all possible moves for the player
+            foreach (BoardPosition pos in playerPositions)
+            {
+                playerMoves.AddRange(GetPossiblePawnMoves(pos));
+                playerMoves.AddRange(GetPossibleStraightMoves(pos, false));
+                playerMoves.AddRange(GetPossibleKnightMoves(pos));
+            }
+
+            foreach (var pos in protectPositions)
+            {
+                foreach(var moves in playerMoves)
+                {
+                    //+1 if piece is protecting an ally piece
+                    if(moves.EndPosition == pos)
+                    {
+                        protect++;
+                        
+                    }
+                }
+                //Revert the protected pieces back to allies
+                SetPieceAtPosition(pos, new ChessPiece(GetPieceAtPosition(pos).PieceType, player));
+                SetPieceAtPosition(pos, new ChessPiece(GetPieceAtPosition(pos).PieceType, enemy));
+            }
+
+            return protect;
+            
+        }
+       
         #endregion
 
         // You may or may not need to add code to this constructor.
