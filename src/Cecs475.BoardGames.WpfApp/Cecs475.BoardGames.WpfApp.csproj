@@ -78,6 +78,9 @@
   <ItemGroup>
     <Compile Include="GameChoiceWindow.xaml.cs" />
     <Compile Include="GameWindow.xaml.cs" />
+    <Compile Include="LoadingGame.xaml.cs">
+      <DependentUpon>LoadingGame.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -113,6 +116,10 @@
     <Page Include="GameWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LoadingGame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

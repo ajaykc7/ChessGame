@@ -40,8 +40,6 @@ namespace Cecs475.BoardGames.WpfApp {
                     assemblyName = assemblyName.Substring(0, assemblyName.Length - 4);
                     string assemblyString = assemblyName + ", Version=" + version +
                         ", Culture=" + culture + ", PublicKeyToken=" + keyToken;
-                    Debug.WriteLine(assemblyString);
-                    //Assembly.LoadFrom(dll);
                     Assembly.Load(assemblyString);
                 }
 
