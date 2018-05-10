@@ -1,6 +1,7 @@
 ﻿using Cecs475.BoardGames.WpfView;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -29,9 +30,19 @@ namespace Cecs475.BoardGames.WpfApp {
                 GameTypes = new List<IWpfGameFactory>();
                 Type iGameFactory = typeof(IWpfGameFactory);
                 var files = Directory.GetFiles("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games", "*.dll");
+
+                string version = "1.0.0.0";
+                string culture = "neutral";
+                string keyToken = "68e71c13048d452a";
+
                 foreach (var dll in files)
                 {
-                    Assembly.LoadFrom(dll);
+                    string assemblyName = dll.Substring(0, dll.Length - 4);
+                    string assemblyString = assemblyName + ", Version=" + version +
+                        ", Culture=" + culture + ", PublicKeyToken=" + keyToken;
+                    Debug.WriteLine(assemblyString);
+                    //Assembly.LoadFrom(dll);
+                    //Assembly.Load(assemblyString);
                 }
 
                 var boardTypes = AppDomain.CurrentDomain.GetAssemblies()
