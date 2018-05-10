@@ -24,12 +24,12 @@ namespace Cecs475.BoardGames.WpfApp
     /// Interaction logic for LoadingGame.xaml
     /// </summary>
 
-    public class GameType
+    public class GameList
     {
-        public GameFiles[] gameFiles { get; set; }
+        public GameType[] gameFiles { get; set; }
     }
 
-    public class GameFiles
+    public class GameType
     {
         public string Name { get; set; }
         public File[] Files { get; set; }
@@ -55,27 +55,29 @@ namespace Cecs475.BoardGames.WpfApp
             var client = new RestClient("https://cecs475-boardamges.herokuapp.com");
             var request = new RestRequest("api/games", Method.GET);
 
-            var response = await client.ExecuteTaskAsync<GameType>(request);
+            var response = await client.ExecuteTaskAsync(request);
 
-            var gameList = response.Data;
+          //  var gameList = response.Data;
             //var response = await client.ExecuteTaskAsync(request);
 
             //JObject obj = JObject.Parse(response.Content);
 
-            //var gameList = JsonConvert.DeserializeObject<List<IWpfGameFactory>>(response.Content);
+            var gameList = JsonConvert.DeserializeObject<List<GameType>>(response.Content);
 
-            foreach (var game in gameList.gameFiles)
+            
+            foreach (var game in gameList)
             {
-               
-                Debug.WriteLine(game.Name);
-                string remoteUri = "";
-                string fileName = "";
-                string webResource = remoteUri + fileName;
+               foreach (var file in game.Files)
+                {
+                    string remoteUri = file.Url;
+                    string fileName = "games/"+file.FileName;
+                    WebClient mWebClient = new WebClient();
+                    var downloadTask = mWebClient.DownloadFileTaskAsync(remoteUri, fileName);
 
-                WebClient mWebClient = new WebClient();
-                var downloadTask = mWebClient.DownloadFileTaskAsync(webResource, fileName);
-
-                await downloadTask;
+                    await downloadTask;
+                }
+                //Debug.WriteLine(game.Name);
+                
             }
 
             //var task = client.ExecuteTaskAsync(request);
