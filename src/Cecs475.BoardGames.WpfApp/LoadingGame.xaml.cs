@@ -56,15 +56,7 @@ namespace Cecs475.BoardGames.WpfApp
             var request = new RestRequest("api/games", Method.GET);
 
             var response = await client.ExecuteTaskAsync(request);
-
-          //  var gameList = response.Data;
-            //var response = await client.ExecuteTaskAsync(request);
-
-            //JObject obj = JObject.Parse(response.Content);
-
             var gameList = JsonConvert.DeserializeObject<List<GameType>>(response.Content);
-
-            
             foreach (var game in gameList)
             {
                foreach (var file in game.Files)
@@ -76,27 +68,7 @@ namespace Cecs475.BoardGames.WpfApp
 
                     await downloadTask;
                 }
-                //Debug.WriteLine(game.Name);
-                
             }
-
-            //var task = client.ExecuteTaskAsync(request);
-            //var response = await task;
-
-            /*if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-            {
-                MessageBox.Show("Game not found");
-            }
-            else
-            {
-                JObject obj = JObject.Parse(response.Content);
-            }*/
-
-            //needs to be inside a foor loop
-            
-
-
-
             Window.GetWindow(new GameChoiceWindow()).Show();
             this.Close();
         }

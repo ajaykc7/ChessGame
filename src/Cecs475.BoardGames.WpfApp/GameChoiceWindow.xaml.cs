@@ -25,8 +25,6 @@ namespace Cecs475.BoardGames.WpfApp {
 
             try
             {
-                // your code
-                //Assembly ChessModelassembly = Assembly.LoadFrom("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games");
                 GameTypes = new List<IWpfGameFactory>();
                 Type iGameFactory = typeof(IWpfGameFactory);
                 var files = Directory.GetFiles("../../../../src/Cecs475.BoardGames.WpfApp/bin/Debug/games", "*.dll");
@@ -51,13 +49,13 @@ namespace Cecs475.BoardGames.WpfApp {
                 {
                     var boardConstr = type.GetConstructor(Type.EmptyTypes);
                     GameTypes.Add((IWpfGameFactory)boardConstr.Invoke(new object[0]));
-                    //GameTypes.Add((IWpfGameFactory)Activator.CreateInstance(type));
                 }
 
                 this.Resources.Add("GameTypes", GameTypes);
 
                 InitializeComponent();
             }
+            //Used to show details of a specific exception
             catch (ReflectionTypeLoadException ex)
             {
                 // now look at ex.LoaderExceptions - this is an Exception[], so:
@@ -68,10 +66,6 @@ namespace Cecs475.BoardGames.WpfApp {
 
                 }
             }
-            
-
-
-            
         }
 
         private List<IWpfGameFactory> GameTypes { get; set; }

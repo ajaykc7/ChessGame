@@ -168,13 +168,6 @@ namespace Cecs475.BoardGames.Chess.WpfView
                 });
             }
 
-            //mPromotedPiece = ;
-
-            //PossibleMoves = new HashSet<ChessMove>(
-            //    from ChessMove m in mBoard.GetPossibleMoves()
-            //    select m
-            //);
-
             PossibleStartPositions = new HashSet<BoardPosition>(
                 from ChessMove m in mBoard.GetPossibleMoves()
                 select m.StartPosition
@@ -189,9 +182,6 @@ namespace Cecs475.BoardGames.Chess.WpfView
             from ChessMove m in mBoard.GetPossibleMoves()
             select m
             );
-            // PossibleMoves = new HashSet<BoardPosition>(
-            //   mBoard.GetPossibleMoves()
-            // .Select(m => m.EndPosition));
         }
 
         public ChessPiece GetPieceAtPosition(BoardPosition pos)
@@ -211,9 +201,7 @@ namespace Cecs475.BoardGames.Chess.WpfView
             {
                 if ((move.StartPosition.Equals(StartBoardPosition))&&(move.EndPosition.Equals(position)))
                 {
-                    //if ((move.EndPosition.Row==0)||(move.EndPosition.Row==7)
-                    //    &&(GetPieceAtPosition(move.StartPosition).PieceType==ChessPieceType.Pawn))
-                    //{
+
                     if (!PromotedPiece.Equals(ChessPieceType.Empty))
                     {
                         if(move.PromoteTo == PromotedPiece)
@@ -222,7 +210,6 @@ namespace Cecs475.BoardGames.Chess.WpfView
                             break;
                         }
                     }
-                    //}
                     else
                     {
                         mBoard.ApplyMove(move);
@@ -246,9 +233,7 @@ namespace Cecs475.BoardGames.Chess.WpfView
                 }
                 RebindState();
             }
-
-
-            MessageBox.Show(mBoard.BoardWeight.ToString());
+            //MessageBox.Show(mBoard.BoardWeight.ToString());
 
             if (mBoard.IsFinished)
             {
@@ -259,13 +244,6 @@ namespace Cecs475.BoardGames.Chess.WpfView
         private void RebindState()
         {
             //Rebind the possible moves, now that the board has changed.
-            //PossibleMoves = new HashSet<ChessMove>(
-            //  mBoard.GetPossibleMoves()
-            //.Select(m => m.EndPosition));
-            // PossibleMoves = new HashSet<ChessMove>(
-            //    from ChessMove m in mBoard.GetPossibleMoves()
-            //   select m
-            //);
             PossibleStartPositions = new HashSet<BoardPosition>(
                from ChessMove m in mBoard.GetPossibleMoves()
                select m.StartPosition
@@ -290,12 +268,7 @@ namespace Cecs475.BoardGames.Chess.WpfView
                 mSquares[i].ChessPiece = mBoard.GetPieceAtPosition(pos);
                 if ((mSquares[i].ChessPiece.PieceType == ChessPieceType.King)&&(mBoard.IsCheck)&& (mSquares[i].ChessPiece.Player == CurrentPlayer))
                 {
-                    //if (mSquares[i].ChessPiece.Player == CurrentPlayer)
-                    //{
                         mSquares[i].IsKingInCheck = true;
-                    //}
-                    
-                    
                 }
                 else
                 {
@@ -416,6 +389,5 @@ namespace Cecs475.BoardGames.Chess.WpfView
             }
         }
     }
-    
     
 }
