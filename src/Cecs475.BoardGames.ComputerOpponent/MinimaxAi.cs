@@ -19,16 +19,16 @@ namespace Cecs475.BoardGames.ComputerOpponent {
 
 		public IGameMove FindBestMove(IGameBoard b) {
 			return FindBestMove(b,
-				true ? int.MinValue : int.MaxValue,
-				true ? int.MaxValue : int.MinValue,
+				true ? long.MinValue : long.MaxValue,
+				true ? long.MaxValue : long.MinValue,
 				mMaxDepth).Move;
 		}
 
-		private static MinimaxBestMove FindBestMove(IGameBoard b, int alpha, int beta, int depthLeft) {
+		private static MinimaxBestMove FindBestMove(IGameBoard b, long alpha, long beta, int depthLeft) {
             return FindBestMove(b, depthLeft, b.CurrentPlayer==1, alpha, beta);
 		}
 
-        private static MinimaxBestMove FindBestMove(IGameBoard b, int depthLeft, bool isMaximizing, int alpha, int beta)
+        private static MinimaxBestMove FindBestMove(IGameBoard b, int depthLeft, bool isMaximizing, long alpha, long beta)
         {
             if (depthLeft == 0 || b.IsFinished)
             {
@@ -39,7 +39,11 @@ namespace Cecs475.BoardGames.ComputerOpponent {
                 };
             }
 
-            long bestWeight = isMaximizing ? long.MinValue : long.MaxValue;
+            //long bestWeight = isMaximizing ? long.MinValue : long.MaxValue;
+            //long local_alpha = int.MinValue;
+            //long local_beta = int.MaxValue;
+            //alpha = long.MinValue;
+            //beta = long.MaxValue;
             IGameMove bestMove = null;
 
             foreach (IGameMove move in b.GetPossibleMoves())
@@ -47,17 +51,19 @@ namespace Cecs475.BoardGames.ComputerOpponent {
                 b.ApplyMove(move);
                 MinimaxBestMove w = FindBestMove(b, depthLeft - 1, !isMaximizing, alpha, beta);
                 b.UndoLastMove();
-                if(isMaximizing && w.Weight > bestWeight)
+                if(isMaximizing && w.Weight > alpha)
                 {
-                    bestWeight = w.Weight;
+                    //bestWeight = w.Weight;
                     bestMove = move;
-                    alpha = (int) w.Weight;
+                    alpha = w.Weight;
+                    //local_alpha = w.Weight;
                     
-                }else if(!isMaximizing && w.Weight < bestWeight)
+                }else if(!isMaximizing && w.Weight < beta)
                 {
-                    bestWeight = w.Weight;
+                    //bestWeight = w.Weight;
                     bestMove = move;
-                    beta = (int)w.Weight;
+                    beta = w.Weight;
+                    //local_beta = w.Weight;
                 }
                 
                 if(!(alpha < beta))
@@ -80,12 +86,31 @@ namespace Cecs475.BoardGames.ComputerOpponent {
                     }
                 }
             }
+            /*
             return new MinimaxBestMove()
             {
                 Weight = bestWeight,
                 Move = bestMove
             };
-
+            */
+            if (isMaximizing)
+            {
+                return new MinimaxBestMove()
+                {
+                    //Weight = local_alpha,
+                    Weight = alpha,
+                    Move = bestMove
+                };
+            }
+            else
+            {
+                return new MinimaxBestMove()
+                {
+                    //Weight = local_beta,
+                    Weight = beta,
+                    Move = bestMove
+                };
+            }
         }
 
 	}
