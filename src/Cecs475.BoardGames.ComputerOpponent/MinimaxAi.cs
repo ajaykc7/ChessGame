@@ -42,8 +42,8 @@ namespace Cecs475.BoardGames.ComputerOpponent {
             //long bestWeight = isMaximizing ? long.MinValue : long.MaxValue;
             //long local_alpha = int.MinValue;
             //long local_beta = int.MaxValue;
-            alpha = long.MinValue;
-            beta = long.MaxValue;
+            //alpha = long.MinValue;
+            //beta = long.MaxValue;
             IGameMove bestMove = null;
 
             foreach (IGameMove move in b.GetPossibleMoves())
